@@ -31,11 +31,19 @@ const movePlayer = async (e) => {
   }
 
   state.questionIndex = state.players[state.playerState].getQuestionIndex();
-
   const number = await dontGetMadView.rollDice(state.playerState);
-
+  if (state.players[state.playerState].getPosBeforeBonus() !== 0) {
+    dontGetMadView.removePlayerIcon(
+      state.players[state.playerState].getPosBeforeBonus(),
+      state.playerState
+    );
+  }
   for (let i = 0; i < number; i++) {
     let position = state.players[state.playerState].getPosition();
+    if (position === 100) {
+      console.log("Game over");
+      return;
+    }
     let result = findElementFromArray(position + 1);
     setTimeout(() => {
       dontGetMadView.renderPlayerMovement(i, position, state.playerState);
@@ -57,6 +65,14 @@ const movePlayer = async (e) => {
     }
   }
 
+  let curPosition = state.players[state.playerState].getPosition();
+  if ([14, 39, 64].includes(curPosition)) {
+    state.players[state.playerState].setPosBeforeBonus(curPosition);
+    for (let i = 0; i < 12; i++)
+      state.players[state.playerState].increasePosition();
+  } else {
+    state.players[state.playerState].setPosBeforeBonus(0);
+  }
   dontGetMadView.disableButton(state.playerState);
 };
 elements.player1DiceBtn.addEventListener("click", movePlayer);
