@@ -82,6 +82,23 @@ export const hideQuestion = (playerState) => {
   disableButton(playerState);
 };
 
+export const winnerWindow = (playerState) => {
+  let playerClass = playerState === 0 ? strings.player1 : strings.player2;
+  const html = `
+    <div class="winner-div">
+      <h1>Баяр xүргэе!</h1>
+      <div class="winner-icon .${playerClass}"></div>
+    </div>
+    </div>
+    `;
+
+  elements.winnerContainer.innerHTML = html;
+  elements.donGetMadDiv.classList.add(strings.filterDiv);
+  elements.winnerContainer.classList.remove(strings.hideDiv);
+
+  disableBothButtons();
+};
+
 //
 //  private functions
 //

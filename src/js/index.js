@@ -31,7 +31,8 @@ const movePlayer = async (e) => {
   }
 
   state.questionIndex = state.players[state.playerState].getQuestionIndex();
-  const number = await dontGetMadView.rollDice(state.playerState);
+  let number = await dontGetMadView.rollDice(state.playerState);
+  number = 7;
   if (state.players[state.playerState].getPosBeforeBonus() !== 0) {
     dontGetMadView.removePlayerIcon(
       state.players[state.playerState].getPosBeforeBonus(),
@@ -40,8 +41,8 @@ const movePlayer = async (e) => {
   }
   for (let i = 0; i < number; i++) {
     let position = state.players[state.playerState].getPosition();
-    if (position === 100) {
-      console.log("Game over");
+    if (position === 6) {
+      dontGetMadView.winnerWindow(state.playerState);
       return;
     }
     let result = findElementFromArray(position + 1);
@@ -66,9 +67,9 @@ const movePlayer = async (e) => {
   }
 
   let curPosition = state.players[state.playerState].getPosition();
-  if ([14, 39, 64].includes(curPosition)) {
+  if (points.greyBoxes.nums.includes(curPosition)) {
     state.players[state.playerState].setPosBeforeBonus(curPosition);
-    for (let i = 0; i < 12; i++)
+    for (let i = 0; i < 11; i++)
       state.players[state.playerState].increasePosition();
   } else {
     state.players[state.playerState].setPosBeforeBonus(0);
