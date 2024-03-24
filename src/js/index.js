@@ -20,6 +20,9 @@ const startDontGetMad = () => {
   // 0 бол эхний тоглогч, 1 бол хоёр дахь тоглогч
   state.playerState = 0;
 
+  state.bonusMoves = 11;
+  state.endBox = 50;
+
   state.players.push(new Player());
   state.players.push(new Player());
   // тоглогчийг хэд дэх асуулт дээр явааг хадгалах хувьсагч
@@ -56,23 +59,30 @@ const movePlayer = async (e) => {
   for (let i = 0; i < number; i++) {
     // тоглогчийн модел Class-аас тоглогчын байрлалыг авах
     let position = state.players[state.playerState].getPosition();
-    // Хэрвээ тоглогчын байрлал 100 тэнцүү бол тоглоомыг дуусгах хэсэг
-    if (position === 10) {
-      //
-      setTimeout(() => {
-        // явагчын цонхыг гаргаж ирэх
-        dontGetMadView.winnerWindow(state.playerState);
-      }, 200 * (i + 1));
-      return;
-    }
+
     // Тоглогчийн байрлалын дараагийн нүд асуулттай нүд эсэхийг шалгана.
     let result = findElementFromArray(position + 1);
     // тоглогчийг дэлгэцэн дээр хөдөлж байгааг нь харуулна.
     setTimeout(() => {
       dontGetMadView.renderPlayerMovement(i, position, state.playerState);
     }, (i + 1) * 200);
-    // хэрвээ тоглогчын байрлаж буй нүд асуулттай нүд бол ажиллах код
-    if (result !== -1) {
+    // тоглогчийн байрлаж буй нүд асуулттай биш бол ажиллах код
+    if (result === -1) {
+      // тоглогчийн байрлалыг нэгээр нэмэгдүүлнэ.
+      state.players[state.playerState].increasePosition();
+      // Хэрвээ тоглогчын байрлал 100 тэнцүү бол тоглоомыг дуусгах хэсэг
+      if (position + 1 === state.endBox) {
+        //
+        setTimeout(() => {
+          // явагчын цонхыг гаргаж ирэх
+          dontGetMadView.winnerWindow(state.playerState);
+        }, 200 * (i + 2));
+        i = number;
+        return;
+      }
+
+      // хэрвээ тоглогчын байрлаж буй нүд асуулттай нүд бол ажиллах код
+    } else {
       state.players[state.playerState].setQuestionIndex(result);
 
       // хэрвээ тоглогч тухайн нүдний асуултад анх удаа таарж буй эсвэл хариулж чадаагүй бол ажиллах код
@@ -87,10 +97,6 @@ const movePlayer = async (e) => {
         // тоглогч асуулттай нүдийг хэтэрч явахгүйн тулд for давталтыг зогсоож буй хэсэг
         i = number;
       }
-      // тоглогчийн байрлаж буй нүд асуулттай биш бол ажиллах код
-    } else {
-      // тоглогчийн байрлалыг нэгээр нэмэгдүүлнэ.
-      state.players[state.playerState].increasePosition();
     }
   }
 
@@ -99,7 +105,7 @@ const movePlayer = async (e) => {
   // хэрвээ одоогийн байрлал нь саарал нод байвал 11 нүд алгасна.
   if (points.greyBoxes.nums.includes(curPosition)) {
     state.players[state.playerState].setPosBeforeBonus(curPosition);
-    for (let i = 0; i < 11; i++)
+    for (let i = 0; i < state.bonusMoves; i++)
       state.players[state.playerState].increasePosition();
   } else {
     state.players[state.playerState].setPosBeforeBonus(0);
