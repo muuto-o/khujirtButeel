@@ -48,6 +48,18 @@ a{
     background-image: url(../img/player1.png), url(../img/player2.png) !important;
     background-repeat: no-repeat;
     background-position: center center;
+} 
+.retry-button{
+        margin-top: 10%;
+        border: 1px solid black;
+        border-radius: 3px;
+        height: 50px;
+        width: 130px;
+        text-align: center;
+        padding: 10px;
+        color: white;
+        background-color: rgb(56, 58, 56);
+        cursor: pointer;
 }
 
 .player-1{

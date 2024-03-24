@@ -1,5 +1,12 @@
 import { elements, strings, points } from "./base";
 import { Questions } from "../model/questions";
+//
+// ###############################
+//
+// ДЭЛГЭЦЭНД ХАРАГДАХ ХЭСГИЙН КОД
+//
+// ###############################
+//
 
 export const startDontGetMade = () => {
   elements.mainMenuDiv.classList.add("hide-div");
@@ -8,6 +15,7 @@ export const startDontGetMade = () => {
   elements.startBox.classList.add(strings.player2);
 };
 
+// шоог хаяж буй код
 export const rollDice = (playerState) => {
   document
     .querySelector(`.${strings.player}-${playerState + 1}__dice-img`)
@@ -26,6 +34,7 @@ export const rollDice = (playerState) => {
   return promise;
 };
 
+// тоглогчдын хөдөлгөөнийг харуулах код
 export const renderPlayerMovement = (i, position, playerState) => {
   let playerClass = playerState === 0 ? strings.player1 : strings.player2;
 
@@ -37,6 +46,7 @@ export const renderPlayerMovement = (i, position, playerState) => {
     .classList.add(playerClass);
 };
 
+// тоглогчын дүрийг арилгах код
 export const removePlayerIcon = (position, playerState) => {
   let playerClass = playerState === 0 ? strings.player1 : strings.player2;
   document
@@ -44,6 +54,7 @@ export const removePlayerIcon = (position, playerState) => {
     .classList.remove(playerClass);
 };
 
+// тоглогчын шоо орхих товчыг идэвхгүй болгох код
 export const disableButton = (playerState) => {
   if (playerState === 0) {
     elements.player1DiceDiv.classList.add("disabled");
@@ -58,6 +69,7 @@ export const disableButton = (playerState) => {
   }
 };
 
+// асуултыг харуулах код
 export const renderQuestion = (number) => {
   const html = `
     <div class="question-div ">${Questions[number].question}</div>
@@ -75,6 +87,7 @@ export const renderQuestion = (number) => {
   disableBothButtons();
 };
 
+// асуултыг алга болгох код
 export const hideQuestion = (playerState) => {
   elements.questionContainer.innerHTML = "";
   elements.donGetMadDiv.classList.remove(strings.filterDiv);
@@ -82,13 +95,14 @@ export const hideQuestion = (playerState) => {
   disableButton(playerState);
 };
 
+// ялагчыг харах код
 export const winnerWindow = (playerState) => {
   let playerClass = playerState === 0 ? strings.player1 : strings.player2;
   const html = `
     <div class="winner-div">
       <h1>Баяр xүргэе!</h1>
-      <div class="winner-icon .${playerClass}"></div>
-    </div>
+      <div class="winner-icon ${playerClass}"></div>
+      <a href="" class="retry-button">Дахин тоглох</a>
     </div>
     `;
 
@@ -103,6 +117,7 @@ export const winnerWindow = (playerState) => {
 //  private functions
 //
 
+// үоог орхиход буусан тоог дэлгэцэнд харуулах код
 const changeDiceNumber = (number, playerState) => {
   if (playerState === 0) {
     elements.player1DiceImg.src = `${strings.diceImgSrc}-${number}.${strings.diceImgExtension}`;
@@ -111,6 +126,7 @@ const changeDiceNumber = (number, playerState) => {
   }
 };
 
+// тоглогчийн шоог орхих 2 товчийг 2ууланг идэвхгүй болгох код
 const disableBothButtons = () => {
   elements.player1DiceDiv.classList.add("disabled");
   elements.player2DiceDiv.classList.add("disabled");
@@ -118,5 +134,6 @@ const disableBothButtons = () => {
   elements.player2DiceBtn.disabled = true;
 };
 
+// асуулттай нүднүүдэд очисон эсэхийг шалгах код
 const findElementFromArray = (position) =>
   points.questionBoxes.nums.findIndex((el) => el === position);
