@@ -44,6 +44,8 @@ a{
     margin-top: 10px;
     background-size: 200px;
 }
+/* бүтэн ажиллаагтай биш */
+/* эхний хувилбарт хэрэглэгдэхгүй */
 .double-player{
     background-image: url(../img/player1.png), url(../img/player2.png) !important;
     background-repeat: no-repeat;
@@ -62,11 +64,13 @@ a{
         cursor: pointer;
 }
 
+/* тоглогч 1-ийн зураг */
 .player-1{
     background-image: url(../img/player1.png);
     background-repeat: no-repeat;
     background-position: center center;
 }
+/* тоглогч 2-ийн зураг */
 .player-2{
     background-image: url(../img/player2.png);
     background-repeat: no-repeat;
