@@ -1,4 +1,4 @@
-import { elements, strings, points } from "./base";
+import { elements, strings } from "./base";
 import { Questions } from "../model/questions";
 //
 // ###############################
@@ -143,6 +143,3 @@ const disableBothButtons = () => {
   elements.player2DiceBtn.disabled = true;
 };
 
-// асуулттай нүднүүдэд очисон эсэхийг шалгах код
-const findElementFromArray = (position) =>
-  points.questionBoxes.nums.findIndex((el) => el === position);
