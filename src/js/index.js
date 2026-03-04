@@ -8,6 +8,8 @@ const state = {
   players: [],
 };
 
+const DEFAULT_END_BOX = 100;
+
 // Тоглогчийн байрлалыг аргументээр аваад questionBoxes объектын nums тассиваас хайж индексийг буцаах функц
 const findElementFromArray = (position) =>
   points.questionBoxes.nums.findIndex((el) => el === position);
@@ -21,13 +23,46 @@ const startDontGetMad = () => {
   state.playerState = 0;
 
   state.bonusMoves = 11;
-  state.endBox = 100;
+  state.endBox = getBoardEndBox();
+
+  reconcileQuestionCheckpoints(state.endBox);
 
   state.players = [new Player(), new Player()];
   // тоглогчийг хэд дэх асуулт дээр явааг хадгалах хувьсагч
   // -1 бол асуулттай нүдэнд очоогүй, бусад үед асуулттай нүдэнд очно.
   state.questionIndex = -1;
   state.questionNumber = -1;
+};
+
+const getBoardEndBox = () => {
+  const boardBoxes = [...document.querySelectorAll(".box_container .box")]
+    .map((box) => {
+      const boxClass = [...box.classList].find((className) =>
+        className.startsWith("box-")
+      );
+
+      return boxClass ? Number(boxClass.split("-")[1]) : NaN;
+    })
+    .filter((boxNumber) => Number.isFinite(boxNumber));
+
+  return boardBoxes.length ? Math.max(...boardBoxes) : DEFAULT_END_BOX;
+};
+
+const reconcileQuestionCheckpoints = (endBox) => {
+  const boardCheckpoints = [...document.querySelectorAll(".checkpoint-box")]
+    .map((checkpoint) => {
+      const checkpointClass = [...checkpoint.classList].find((className) =>
+        className.startsWith("box-")
+      );
+
+      return checkpointClass ? Number(checkpointClass.split("-")[1]) : NaN;
+    })
+    .filter((checkpointNumber) => Number.isFinite(checkpointNumber))
+    .filter((checkpointNumber) => checkpointNumber <= endBox)
+    .sort((a, b) => a - b);
+
+  points.questionBoxes.nums = boardCheckpoints;
+  points.questionBoxes.isPassed = boardCheckpoints.map(() => false);
 };
 
 //
