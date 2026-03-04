@@ -35,7 +35,7 @@ export const rollDice = (playerState) => {
 };
 
 // тоглогчдын хөдөлгөөнийг харуулах код
-export const renderPlayerMovement = (i, position, playerState) => {
+export const renderPlayerMovement = (position, playerState) => {
   let playerClass = playerState === 0 ? strings.player1 : strings.player2;
 
   document
@@ -44,6 +44,15 @@ export const renderPlayerMovement = (i, position, playerState) => {
   document
     .querySelector(`.${strings.boxwNumber}-${position + 1}`)
     .classList.add(playerClass);
+};
+
+// бонус нүүдлийг дэлгэцэнд алхам алхмаар харуулах код
+export const renderBonusMovement = (position, moves, playerState) => {
+  for (let i = 0; i < moves; i++) {
+    setTimeout(() => {
+      renderPlayerMovement(position + i, playerState);
+    }, (i + 1) * 200);
+  }
 };
 
 // тоглогчын дүрийг арилгах код
