@@ -47,14 +47,6 @@ const movePlayer = async (e) => {
 
   // шооны буусан нүдыг хадгалах number хувьсагч
   let number = await dontGetMadView.rollDice(state.playerState);
-  // тоглогчийг бонус нүдэнд очсон бол тоглогчын дүрсийг шилжсэн нүднээс аригах код
-  if (state.players[state.playerState].getPosBeforeBonus() !== 0) {
-    dontGetMadView.removePlayerIcon(
-      state.players[state.playerState].getPosBeforeBonus(),
-      state.playerState
-    );
-  }
-
   // тоглогчын шооны нүдний дагуу урагшлуулах кодын хэсэг
   for (let i = 0; i < number; i++) {
     // тоглогчийн модел Class-аас тоглогчын байрлалыг авах
@@ -64,7 +56,7 @@ const movePlayer = async (e) => {
     let result = findElementFromArray(position + 1);
     // тоглогчийг дэлгэцэн дээр хөдөлж байгааг нь харуулна.
     setTimeout(() => {
-      dontGetMadView.renderPlayerMovement(i, position, state.playerState);
+      dontGetMadView.renderPlayerMovement(position, state.playerState);
     }, (i + 1) * 200);
     // тоглогчийн байрлаж буй нүд асуулттай биш бол ажиллах код
     if (result === -1) {
@@ -102,13 +94,17 @@ const movePlayer = async (e) => {
 
   // тоглогчийн нүүж дууссаны дараах байрлалыг curPosition хувьсагчид хадгална.
   let curPosition = state.players[state.playerState].getPosition();
-  // хэрвээ одоогийн байрлал нь саарал нод байвал 11 нүд алгасна.
+  // хэрвээ одоогийн байрлал нь саарал нүд байвал 11 нүдний бонус нүүдлийг нэн даруй харуулна.
   if (points.greyBoxes.nums.includes(curPosition)) {
-    state.players[state.playerState].setPosBeforeBonus(curPosition);
-    for (let i = 0; i < state.bonusMoves; i++)
+    dontGetMadView.renderBonusMovement(
+      curPosition,
+      state.bonusMoves,
+      state.playerState
+    );
+
+    for (let i = 0; i < state.bonusMoves; i++) {
       state.players[state.playerState].increasePosition();
-  } else {
-    state.players[state.playerState].setPosBeforeBonus(0);
+    }
   }
   dontGetMadView.disableButton(state.playerState);
 };
@@ -125,7 +121,9 @@ const checkAnswer = (answer) => {
     document.querySelector("." + answer).style.borderWidth = "5px";
     document.querySelector("." + answer).style.color = "green";
     setTimeout(() => {
+      const currentPosition = state.players[state.playerState].getPosition();
       dontGetMadView.hideQuestion(state.playerState);
+      dontGetMadView.renderPlayerMovement(currentPosition, state.playerState);
       state.players[state.playerState].increasePosition();
     }, 2000);
   } else {
