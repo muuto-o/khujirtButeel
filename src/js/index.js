@@ -21,13 +21,13 @@ const startDontGetMad = () => {
   state.playerState = 0;
 
   state.bonusMoves = 11;
-  state.endBox = 50;
+  state.endBox = 100;
 
-  state.players.push(new Player());
-  state.players.push(new Player());
+  state.players = [new Player(), new Player()];
   // тоглогчийг хэд дэх асуулт дээр явааг хадгалах хувьсагч
   // -1 бол асуулттай нүдэнд очоогүй, бусад үед асуулттай нүдэнд очно.
   state.questionIndex = -1;
+  state.questionNumber = -1;
 };
 
 //
