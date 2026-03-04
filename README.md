@@ -12,6 +12,8 @@ A two-player browser board game built with JavaScript and bundled with Webpack.
 
 For a detailed list, see [`docs/FEATURE_LIST.md`](docs/FEATURE_LIST.md).
 
+Planned milestones and implementation tasks are tracked in [`docs/FUTURE_FEATURE_LIST.md`](docs/FUTURE_FEATURE_LIST.md).
+
 ## Tech Stack
 
 - JavaScript (ES6 modules)
